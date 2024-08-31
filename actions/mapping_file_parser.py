@@ -1,10 +1,10 @@
 from typing import Tuple
 
-from constants.constants import LOOKUP_TABLE_PATH
+from constants.constants import LOOKUP_TABLE_VALID_PATH, LOOKUP_TABLE_INVALID_PATH, LOOKUP_TABLE_CASE_INSENSITIVE_PATH
 
 
 def parse_mapping_file() -> Tuple[list[str], dict]:
-    with open(LOOKUP_TABLE_PATH) as file:
+    with open(LOOKUP_TABLE_VALID_PATH) as file:
         mapping_data = dict()
         line_no = 1
         for line in file:

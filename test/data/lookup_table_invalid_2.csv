@@ -1,0 +1,4 @@
+dstport,srcport,protocols,tag
+110,49152,tcp,email
+993,49153,tcp,email
+143,1,tcp,email

@@ -1,7 +1,7 @@
 import csv
 
 
-def write_csv_output(output_file_name, counter, metadata):
+def write_csv_output(output_file_name: str, counter: dict, metadata: list[str]) -> None:
     with open(output_file_name, mode='w', newline='') as file:
         writer = csv.writer(file)
 

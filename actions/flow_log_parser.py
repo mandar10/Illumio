@@ -1,15 +1,14 @@
 import os
-from typing import Optional
 import csv
 
-from constants.constants import DEFAULT_LOG_FORMAT
+from constants.constants import DEFAULT_LOG_FORMAT, NUMBER_TO_PROTOCOL_MAPPER_FILE_PATH
 from data.flow_log_dataclass import FlowLog
 from utils import common_utils
 
 
 def parse_flow_log_file(input_file: str, custom_log_format: str) -> list[FlowLog]:
     if input_file == "" or not os.path.exists(input_file):
-        raise Exception(f"Flow Log Parsing Action Error: Error in the input file {input_file}")
+        raise Exception(f"Flow Log Parsing Action Error: Error in the input file {input_file}. File does not exist or is invalid")
 
     with open(input_file) as file:
         flow_log_dataclass_list = list()
@@ -26,7 +25,7 @@ def parse_flow_log_file(input_file: str, custom_log_format: str) -> list[FlowLog
 def create_number_to_protocol_mapper() -> dict:
     try:
         number_to_protocol_mapper = dict()
-        with open("constants/flat/protocol_numbers.csv", mode='r') as file:
+        with open(NUMBER_TO_PROTOCOL_MAPPER_FILE_PATH, mode='r') as file:
             reader = csv.reader(file)
             for row in reader:
                 number_to_protocol_mapper[row[0]] = row[1]
@@ -44,7 +43,7 @@ def parse_flow_log_record(record: str, custom_log_format: str, number_to_protoco
 
     if len(record_list) != len(log_format_list):
         raise Exception(f"Flow Log Parsing Action Error: The input file format does not match with default/custom "
-                        f"format")
+                        f"format. Error on line {line_no} in the input file")
 
     flow_log_dict = dict()
     for i in range(len(log_format_list)):
@@ -52,7 +51,8 @@ def parse_flow_log_record(record: str, custom_log_format: str, number_to_protoco
             if record_list[i] in number_to_protocol_mapper:
                 record_list[i] = number_to_protocol_mapper[record_list[i]].lower()
             else:
-                raise Exception(f"Flow Log Parsing Action Error: Error on line {line_no} in the input file")
+                raise Exception(f"Flow Log Parsing Action Error: Error on line {line_no} in the input file. Number to "
+                                f"Protocol Mapping failed")
         flow_log_dict[log_format_list[i].replace("-", "_").strip()] = record_list[i]
 
     return common_utils.class_from_args(FlowLog, flow_log_dict)
