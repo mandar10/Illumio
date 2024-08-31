@@ -31,4 +31,4 @@ def parse_mapping_data(record: str, mapping_metadata: list[str], line_no) -> tup
 
     mapping_datum_key = ",".join(record_list[:-1])
     mapping_datum_value = record_list[-1]
-    return mapping_datum_key.lower(), mapping_datum_value
+    return mapping_datum_key.lower(), mapping_datum_value.lower()

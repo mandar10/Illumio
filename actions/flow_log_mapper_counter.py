@@ -12,6 +12,6 @@ def map_flow_log_data(flow_log_dataclass_list: list[FlowLog], mapping_metadata: 
 
         tag = "Untagged"
         if key[:-1] in mapping_data:
-            tag = mapping_data[key[:-1]]
+            tag = mapping_data[key[:-1].lower()]
         counter[tag] += 1
     return counter
